@@ -1,52 +1,41 @@
 fun main() {
+
     fun part1(input: List<String>): Int {
-        var tempValue: Int? = null
-        var count = 0
+        val totalCaloriesPerElf = mutableListOf<Int>()
 
-        input.forEach { number ->
-            val numberInInt = number.toInt()
-
-            if (tempValue == null) {
-                tempValue = numberInInt
-                return@forEach
+        var tempValue = 0
+        input.forEach { calorie ->
+            if (calorie.isNotBlank()) {
+                tempValue += calorie.toInt()
+            } else {
+                totalCaloriesPerElf.add(tempValue)
+                tempValue = 0
             }
-
-            if (numberInInt > tempValue!!) {
-                count++
-            }
-
-            tempValue = numberInInt
         }
 
-        return count
+        return totalCaloriesPerElf.apply { sortDescending() }.first()
     }
 
     fun part2(input: List<String>): Int {
-        var tempValue: Int? = null
-        var count = 0
-        val windowList = input.windowed(3, 1)
+        val totalCaloriesPerElf = mutableListOf<Int>()
 
-        windowList.forEach { window ->
-            if (tempValue == null) {
-                tempValue = window.sumOf { it.toInt() }
-                return@forEach
+        var tempValue = 0
+        input.forEach { calorie ->
+            if (calorie.isNotBlank()) {
+                tempValue += calorie.toInt()
+            } else {
+                totalCaloriesPerElf.add(tempValue)
+                tempValue = 0
             }
-
-            val sum = window.sumOf { it.toInt() }
-            if (sum > tempValue!!) {
-                count++
-            }
-
-            tempValue = sum
-
         }
-        return count
+
+        return totalCaloriesPerElf.apply { sortDescending() }.take(3).sum()
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day01_test")
-    check(part1(testInput) == 7)
-    check(part2(testInput) == 5)
+    check(part1(testInput) == 68292)
+    check(part2(testInput) == 203203)
 
     val input = readInput("Day01")
     println(part1(input))
